@@ -176,6 +176,36 @@ $ rosrun carla_opencv 3houghLine.py
 ```
 
 
+## 8. dnn_detect ROS 패키지
+
+#### 설치
+sudo apt install ros-kinetic-dnn-detect
+
+#### launch 파일 수정
+```script
+<!-- Run the dnn_detect node -->
+<launch>
+  <!-- namespace for camera input -->
+  <arg name="camera" default="/camera"/>
+  <arg name="image" default="image"/>
+  <arg name="transport" default="raw"/>
+
+  <node pkg="dnn_detect" name="dnn_detect"
+    type="dnn_detect" output="screen" respawn="false">
+    <param name="image_transport" value="$(arg transport)"/>
+    <param name="publish_images" value="true" />
+    <param name="data_dir" value="$(find dnn_detect)/model"/>
+    <remap from="/camera" to="/carla/hero/camera/rgb/front/image_color" />
+    <remap from="/camera/camera_info" to="/carla/hero/camera/rgb/front/camera_info" />
+  </node>
+</launch>
+```
+#### 실행
+```bash
+$ roslaunch dnn_detect dnn_detect.launch
+```
+
+
 >**참고자료**
 
 >- https://steemit.com/kr/@deep-root/ubuntu-cuda (Nvidia graphic driver isntallation)
