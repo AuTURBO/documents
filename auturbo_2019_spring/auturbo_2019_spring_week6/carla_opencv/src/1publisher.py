@@ -15,6 +15,7 @@ class Publisher():
         
     def callback(self, image_msg):
         cv_image = self.bridge.imgmsg_to_cv2(image_msg, "bgr8")
+        cv_image = cv2.resize(cv_image, dsize=(0, 0), fx=0.5, fy=0.5, interpolation=cv2.INTER_LINEAR)
         #publising compressed image
         msg_cmpressed_image = CompressedImage()
         msg_cmpressed_image.header.stamp = rospy.Time.now()
