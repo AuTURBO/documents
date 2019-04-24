@@ -5,7 +5,7 @@ import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from sensor_msgs.msg import CompressedImage
-
+import math
 
 class Hough():
     def __init__(self):
@@ -39,7 +39,7 @@ class Hough():
 	        cv2.line(cdstP, (l[0], l[1]), (l[2], l[3]), (0, 0, 255), 1, cv2.LINE_AA)
 	 
 	cv2.imshow("Source", src), cv2.waitKey(1)
-	cv2.imshow("Detected Lines (in red) - Standard Hough Line Transform", cdst), cv2.waitKey(1)
+	#cv2.imshow("Detected Lines (in red) - Standard Hough Line Transform", cdst), cv2.waitKey(1)
 	cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", cdstP), cv2.waitKey(1)
 
     def main(self):
