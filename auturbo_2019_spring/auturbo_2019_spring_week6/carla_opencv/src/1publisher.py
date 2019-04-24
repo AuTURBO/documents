@@ -9,35 +9,22 @@ from sensor_msgs.msg import CompressedImage
 
 class Publisher():
     def __init__(self):
+        self._sub = rospy.Subscriber('/carla/hero/camera/rgb/front/image_color', Image, self.callback, queue_size=1)
         self._pub1 = rospy.Publisher('/image_compressed', CompressedImage, queue_size=1)
-        self._pub2 = rospy.Publisher('/image_raw', Image, queue_size=1)
-
         self.bridge = CvBridge()
-
-
+        
+    def callback(self, image_msg):
+        cv_image = self.bridge.imgmsg_to_cv2(image_msg, "bgr8")
+        #publising compressed image
+        msg_cmpressed_image = CompressedImage()
+        msg_cmpressed_image.header.stamp = rospy.Time.now()
+        msg_cmpressed_image.format = "jpeg"
+        msg_cmpressed_image.data = np.array(cv2.imencode('.jpg', cv_image)[1]).tostring()
+        self._pub1.publish(msg_cmpressed_image)
+       
     def main(self):
-        print('start')
-        cam = cv2.VideoCapture(0)
-        cv2.namedWindow('publisher')
-        cv2.moveWindow('publisher', 40,30)
-        while True:
-            ret_val, cv_image = cam.read()
-            #publising compressed image
-            msg_raw_image = CompressedImage()
-            msg_raw_image.header.stamp = rospy.Time.now()
-            msg_raw_image.format = "jpeg"
-            msg_raw_image.data = np.array(cv2.imencode('.jpg', cv_image)[1]).tostring()
-            self._pub1.publish(msg_raw_image)
+        rospy.spin()
 
-            #publishing raw image
-            self._pub2.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
-            cv2.imshow('publisher', cv_image)
-            key = cv2.waitKey(20) & 0xFF
-            if key!=255:
-                break
-        cam.release 
-        cv2.destroyAllWindows() 
-        exit()
 if __name__ == '__main__':
     rospy.init_node('publisher')
     node = Publisher()
