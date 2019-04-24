@@ -9,7 +9,7 @@ from sensor_msgs.msg import CompressedImage
 
 class Display_image():
     def __init__(self):
-        self.selecting_sub_image = "raw"
+        self.selecting_sub_image = "compressed"
 
         if self.selecting_sub_image == "compressed":
             self._sub = rospy.Subscriber('/image_compressed', CompressedImage, self.callback, queue_size=1)
