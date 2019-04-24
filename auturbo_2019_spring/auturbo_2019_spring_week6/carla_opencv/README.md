@@ -144,6 +144,7 @@ export PYTHONPATH=$PYTHONPATH:~/Downloads/CARLA/PythonAPI/carla/dist/carla-0.9.5
 
 #### 6.1. ip 설정
 |---|aws|내PC|
+|---|---|---|
 |ROS_MASTER_URI|aws 프라이빗 ip|aws 퍼블릭 ip|
 |ROS_HOSTNAME|aws 퍼블릭 ip|내 PC ip|
 
